@@ -25,6 +25,9 @@ spec:
           resources:
             requests:
               cpu: "0.5"
+            limits:
+              cpu: "0.5"
+              memory: "64Mi"
       volumes:
         - name: game-data
           persistentVolumeClaim:
