@@ -38,3 +38,10 @@ spec:
         # Save values then run:
         # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-sensor
         name: "wiz-client-auth"
+    imagePullSecret:
+      create: false
+      # Steps to create this secret:
+      # Open Wiz. Settings > Access Management > Service Accounts > Add Service Account type Sensor
+      # Save values then run:
+      # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-sensor
+      name: "wiz-image-pull-auth"
