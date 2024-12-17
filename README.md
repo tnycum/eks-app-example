@@ -37,6 +37,12 @@ flux bootstrap github \                                                         
     --path=clusters/dev
 ```
 
+Force a refresh on the cluster with this command after a `git push` to avoid waiting for the poll interval:
+
+```sh
+flux reconcile kustomization apps -n flux-system
+```
+
 ## Wiz Scan
 
 Initiate an on-demand scan going to `Settings > Deployments`, finding the options next to the AWS Connector, and initiating a rescan of the cloud and workloads.
