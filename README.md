@@ -36,3 +36,7 @@ flux bootstrap github \                                                         
     --personal \
     --path=clusters/dev
 ```
+
+## Wiz Scan
+
+Initiate an on-demand scan going to `Settings > Deployments`, finding the options next to the AWS Connector, and initiating a rescan of the cloud and workloads.

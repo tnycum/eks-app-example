@@ -13,6 +13,9 @@ spec:
       labels:
         app.kubernetes.io/name: app-2048
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
         - image: public.ecr.aws/l6m2t8p7/docker-2048:latest
           imagePullPolicy: Always
