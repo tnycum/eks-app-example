@@ -1,0 +1,12 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: tnycum-basic-cluster
+  region: us-east-1
+  version: "1.29"
+iam:
+  withOIDC: true
+
+autoModeConfig:
+  enabled: true
