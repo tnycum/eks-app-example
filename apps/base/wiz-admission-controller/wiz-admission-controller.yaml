@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: wiz
+  name: wiz-admission-controller
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: wiz-sec
-  namespace: wiz
+  namespace: wiz-admission-controller
 spec:
   interval: 24h
   url: https://charts.wiz.io
@@ -17,7 +17,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: wiz-admission-controller
-  namespace: wiz
+  namespace: wiz-admission-controller
 spec:
   interval: 30m
   chart:
@@ -27,7 +27,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: wiz-sec
-        namespace: wiz
+        namespace: wiz-admission-controller
       interval: 12h
   values:
     wizApiToken:
@@ -36,5 +36,5 @@ spec:
         # Steps to create this secret:
         # Open Wiz. Settings > Access Management > Service Accounts > Add Service Account type Kubernetes Admission
         # Save values then run:
-        # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz
+        # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-admission-controller
         name: "wiz-client-auth"
