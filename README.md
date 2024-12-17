@@ -24,4 +24,15 @@ Cleanup:
 eksctl delete cluster --config-file eks/basic-cluster.yaml --disable-nodegroup
 ```
 
-Test change
+## Flux
+
+```sh
+flux bootstrap github \                                                                                                                   <aws:optiv-tnycum>
+    --token-auth \
+    --context=$(kubectl config current-context) \
+    --owner=${GITHUB_USER} \
+    --repository=${GITHUB_REPO} \
+    --branch=main \
+    --personal \
+    --path=clusters/dev
+```
