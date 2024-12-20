@@ -6,6 +6,3 @@ resources:
   - ../base/wiz-sensor
   - wiz-sensor-auth-secret.yaml
   - wiz-sensor-image-pull-auth-secret.yaml
-spec:
-  decryption:
-    provider: sops
