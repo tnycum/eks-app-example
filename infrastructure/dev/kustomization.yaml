@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base/wiz-admission-controller
+  - wiz-admission-controller-auth-secret.yaml
+  - ../base/wiz-sensor
+spec:
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

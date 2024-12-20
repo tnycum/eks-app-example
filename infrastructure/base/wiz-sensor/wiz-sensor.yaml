@@ -43,5 +43,5 @@ spec:
       # Steps to create this secret:
       # Open Wiz. Settings > Access Management > Service Accounts > Add Service Account type Sensor
       # Save values then run:
-      # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-sensor
+      # k -n wiz-sensor create secret docker-registry wiz-image-pull-auth --docker-server=wizio.azurecr.io --docker-username=VALUE --docker-password=VALUE
       name: "wiz-image-pull-auth"

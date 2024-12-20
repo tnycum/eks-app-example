@@ -24,7 +24,29 @@ Cleanup:
 eksctl delete cluster --config-file eks/basic-cluster.yaml --disable-nodegroup
 ```
 
+## Create KMS key
+
+First get the OIDC issuer ID:
+
+```sh
+export OIDC_PROVIDER=$(aws eks describe-cluster --name tnycum-basic-cluster --query "cluster.identity.oidc.issuer" --output text | awk -F'//' '{print $2}')
+```
+
+Terraform to create KMS key and IAM Role.
+
+```sh
+tf init
+tf plan -var oidc_provider=$OIDC_PROVIDER
+```
+
 ## Flux
+
+First, make sure the `kustomize-controller` can decrypt secrets.
+
+```sh
+export SOPS_DECRYPT_ROLE_ARN=$(tf output -raw sops_decrypt_role_arn)
+eksctl create iamserviceaccount --config-file=eks/cluster.yaml --name kustomize-controller --namespace flux-system --attach-policy-arn=$SOPS_DECRYPT_ROLE_ARN
+```
 
 ```sh
 flux bootstrap github \                                                                                                                   <aws:optiv-tnycum>
