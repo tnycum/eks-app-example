@@ -3,15 +3,3 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
-patches:
-  # TODO fix hardcoded role ARN
-  - patch: |
-      apiVersion: v1
-      kind: ServiceAccount
-      metadata:
-        name: controller
-        annotations:
-          eks.amazonaws.com/role-arn: arn:aws:iam::767397711327:role/sops_decrypt
-    target:
-      kind: ServiceAccount
-      name: "kustomize-controller"

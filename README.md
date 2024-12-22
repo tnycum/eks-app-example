@@ -15,41 +15,26 @@ export AWS_PROFILE=optiv-tnycum
 ## Build EKS cluster (eksctl)
 
 ```sh
-eksctl create cluster --config-file eks/basic-cluster.yaml
+cd terraform/
+terraform init
+terraform apply
 ```
 
-Cleanup:
+Check access:
 
 ```sh
-eksctl delete cluster --config-file eks/basic-cluster.yaml --disable-nodegroup
+kubectl version
 ```
 
-## Create KMS key
-
-First get the OIDC issuer ID:
-
-```sh
-export OIDC_PROVIDER=$(aws eks describe-cluster --name tnycum-basic-cluster --query "cluster.identity.oidc.issuer" --output text | awk -F'//' '{print $2}')
-```
-
-Terraform to create KMS key and IAM Role.
-
-```sh
-tf init
-tf plan -var oidc_provider=$OIDC_PROVIDER
-```
+If seeing an error related to TLS validation, this is because of the Netskope proxy. Temporary workaround is to comment out the line with `certificate-authority-data` and insert a line above it with `insecure-skip-tls-verify: true`. If you see a new TLS validation error, just retry until it works.
 
 ## Flux
 
 First, make sure the `kustomize-controller` can decrypt secrets.
 
-```sh
-export SOPS_DECRYPT_ROLE_ARN=$(tf output -raw sops_decrypt_role_arn)
-eksctl create iamserviceaccount --config-file=eks/cluster.yaml --name kustomize-controller --namespace flux-system --attach-policy-arn=$SOPS_DECRYPT_ROLE_ARN
-```
 
 ```sh
-flux bootstrap github \                                                                                                                   <aws:optiv-tnycum>
+flux bootstrap github \
     --token-auth \
     --context=$(kubectl config current-context) \
     --owner=${GITHUB_USER} \
@@ -58,6 +43,8 @@ flux bootstrap github \                                                         
     --personal \
     --path=clusters/dev
 ```
+
+### Flux tips
 
 Force a refresh on the cluster with this command after a `git push` to avoid waiting for the poll interval:
 
@@ -68,3 +55,7 @@ flux reconcile kustomization apps -n flux-system
 ## Wiz Scan
 
 Initiate an on-demand scan going to `Settings > Deployments`, finding the options next to the AWS Connector, and initiating a rescan of the cloud and workloads.
+
+## Ideas
+
+- Enable EKS Secrets Encryption at rest
