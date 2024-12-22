@@ -56,6 +56,44 @@ flux reconcile kustomization apps -n flux-system
 
 Initiate an on-demand scan going to `Settings > Deployments`, finding the options next to the AWS Connector, and initiating a rescan of the cloud and workloads.
 
+## MKAT Scan
+
+Check permissions using DataDog's tool [MKAT](https://github.com/DataDog/managed-kubernetes-auditing-toolkit).
+
+Show IAM role relationships in the cluster (this can sort of be seen in the EKS console too, under the Access tab):
+
+```sh
+mkat eks find-role-relationships
+```
+
+Find hardcoded AWS creds:
+
+```sh
+mkat eks find-secrets
+```
+
+Find access to IMDS (both IMDSv1 and IMDSv2):
+
+```sh
+# This requires creation of Pods
+mkat eks test-imds-access
+```
+
+## SOPS
+
+Encrypt secret:
+
+```sh
+sops -e -i my-k8s-secret.yaml
+```
+
+Decrypt secret:
+
+```sh
+sops -d my-k8s-secret.yaml
+```
+
 ## Ideas
 
 - Enable EKS Secrets Encryption at rest
+- Add certificate to game ingress
