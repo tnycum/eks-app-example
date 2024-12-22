@@ -4,9 +4,8 @@ resources:
   - ../base/2048
 patches:
   - patch: |
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: game-2048
       spec:
         replicas: 1
+    target:
+      kind: Deployment
+      name: game-2048
