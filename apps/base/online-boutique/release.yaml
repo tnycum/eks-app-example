@@ -22,6 +22,7 @@ spec:
   # https://github.com/GoogleCloudPlatform/microservices-demo/blob/main/helm-chart/values.yaml
   values:
     networkPolicies:
-      create: true
+      create: false
     frontend:
-      platform: aws
+      # Using ingress in favor of service type LoadBalancer
+      externalService: false
