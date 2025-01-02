@@ -5,4 +5,4 @@ metadata:
   namespace: onlineboutique
 spec:
   interval: 5m
-  url: us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique
+  url: oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique
