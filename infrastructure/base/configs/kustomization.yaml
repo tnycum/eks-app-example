@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ingressclass.yaml
   - storageclass.yaml
+  - enable-network-policy.yaml
