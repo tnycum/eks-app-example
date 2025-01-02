@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: onlineboutique
+  namespace: onlineboutique
+spec:
+  interval: 5m
+  url: us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique
