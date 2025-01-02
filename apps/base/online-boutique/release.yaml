@@ -5,12 +5,9 @@ metadata:
   namespace: onlineboutique
 spec:
   releaseName: onlineboutique
-  chart:
-    spec:
-      chart: onlineboutique
-      sourceRef:
-        kind: OCIRepository
-        name: onlineboutique
+  chartRef:
+    kind: OCIRepository
+    name: onlineboutique
   interval: 50m
   install:
     remediation:
