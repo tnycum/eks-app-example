@@ -30,13 +30,9 @@ If seeing an error related to TLS validation, this is because of the Netskope pr
 
 ## Flux
 
-First, make sure the `kustomize-controller` can decrypt secrets.
-
-
 ```sh
 flux bootstrap github \
     --token-auth \
-    --context=$(kubectl config current-context) \
     --owner=${GITHUB_USER} \
     --repository=${GITHUB_REPO} \
     --branch=main \
@@ -95,5 +91,4 @@ sops -d my-k8s-secret.yaml
 
 ## Ideas
 
-- Enable EKS Secrets Encryption at rest
 - Add certificate to game ingress
