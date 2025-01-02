@@ -6,3 +6,5 @@ metadata:
 spec:
   interval: 5m
   url: oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique
+  ref:
+    tag: 0.10.2
