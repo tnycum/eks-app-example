@@ -6,3 +6,4 @@ resources:
   - release.yaml
   - repository.yaml
   - ingress.yaml
+  - ingress-networkpolicy.yaml
