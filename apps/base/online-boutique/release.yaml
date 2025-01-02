@@ -9,7 +9,7 @@ spec:
     spec:
       chart: onlineboutique
       sourceRef:
-        kind: HelmRepository
+        kind: OCIRepository
         name: onlineboutique
   interval: 50m
   install:
