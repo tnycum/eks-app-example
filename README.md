@@ -75,6 +75,14 @@ Find access to IMDS (both IMDSv1 and IMDSv2):
 mkat eks test-imds-access
 ```
 
+## Check Pod Security Admission violations
+
+This command previews which resources would violate pod security best practices if higher pod security admission controls were applied.
+
+```sh
+kubectl label --dry-run=server --overwrite ns --all pod-security.kubernetes.io/enforce=restricted
+```
+
 ## SOPS
 
 Encrypt secret:
