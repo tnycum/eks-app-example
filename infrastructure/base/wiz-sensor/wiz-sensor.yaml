@@ -33,15 +33,20 @@ spec:
     wizApiToken:
       secret:
         create: false
-        # Steps to create this secret:
+        # Steps to create this secret if not in repo:
         # Open Wiz. Settings > Access Management > Service Accounts > Add Service Account type Sensor
-        # Save values then run:
-        # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-sensor
+        # Save values then run this command to create a local secret file:
+        # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-sensor -o yaml --dry-run > wiz-client-auth-secret.yaml
+        # Then encrypt with SOPS:
+        # (you may also need to specify KMS key ARN with --kms <kms-arn>)
+        # sops -e -i wiz-client-auth-secret.yaml
         name: "wiz-client-auth"
     imagePullSecret:
       create: false
-      # Steps to create this secret:
-      # Open Wiz. Settings > Access Management > Service Accounts > Add Service Account type Sensor
-      # Save values then run:
+      # Steps to create this secret if not in repo:
+      # Open Wiz. Click user in top right > Tenant Info > Look for Wiz Registry Credentials
+      # Create the secret file locally
       # k -n wiz-sensor create secret docker-registry wiz-image-pull-auth --docker-server=wizio.azurecr.io --docker-username=VALUE --docker-password=VALUE
+      # k create secret docker-registry wiz-image-pull-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-sensor -o yaml --dry-run > wiz-image-pull-auth-secret.yaml
+      # Then encrypt with SOPS like above
       name: "wiz-image-pull-auth"
