@@ -38,3 +38,5 @@ spec:
         # Save values then run:
         # k create secret generic wiz-client-auth --from-literal=clientId=VALUE --from-literal=clientToken=VALUE -n wiz-admission-controller
         name: "wiz-client-auth"
+    kubernetesAuditLogsWebhook:
+      enabled: true
