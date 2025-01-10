@@ -40,3 +40,13 @@ spec:
         name: "wiz-client-auth"
     kubernetesAuditLogsWebhook:
       enabled: true
+    opaWebhook:
+      namespaceSelector:  # https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#matching-requests-namespaceselector
+        matchExpressions:
+        - key: kubernetes.io/metadata.name # Using "kubernetes.io/metadata.name" key to exclude specific namespaces (https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/2161-apiserver-default-labels/README.md#proposal)
+          operator: NotIn
+          values:
+          - kube-system
+          - kube-node-lease
+          - wiz-admission-controller
+          - wiz-sensor
