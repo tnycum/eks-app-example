@@ -34,7 +34,13 @@ If seeing an error related to TLS validation, this may be because of the Netskop
 
 FluxCD is used to deploy all of the cluster applications and Wiz runtime defense components.
 
+**Note: This command will only work with GitHub.**
+
 ```sh
+export GITHUB_USER=<github-username>
+export GITHUB_REPO=<github-repo-name>
+export GITHUB_TOKEN=<personal-access-token granting repo:* access>
+
 flux bootstrap github \
     --token-auth \
     --owner=${GITHUB_USER} \
