@@ -4,15 +4,15 @@
 
 ```sh
 aws configure sso
-# Set up profile called 'optiv-sso'
+# Set up profile and give it a name like 'optiv-sso'
 # Point to my AWS dev account
-aws sso login --profile optiv-tnycum
+aws sso login --profile <profile-name>
 
 # Have AWS CLI point to my AWS dev account
-export AWS_PROFILE=optiv-tnycum
+export AWS_PROFILE=<profile-name>
 ```
 
-## Build EKS cluster (eksctl)
+## Build EKS cluster
 
 ```sh
 cd terraform/
@@ -20,15 +20,19 @@ terraform init
 terraform apply
 ```
 
-Check access:
+Once terraform is applied, it will update your local `~/.kube/config` file to point to the new EKS cluster.
+
+Sanity check to ensure access to cluster works:
 
 ```sh
 kubectl version
 ```
 
-If seeing an error related to TLS validation, this is because of the Netskope proxy. Temporary workaround is to comment out the line with `certificate-authority-data` and insert a line above it with `insecure-skip-tls-verify: true`. If you see a new TLS validation error, just retry until it works.
+If seeing an error related to TLS validation, this may be because of the Netskope proxy. Temporary workaround is to comment out the line with `certificate-authority-data` and insert a line above it with `insecure-skip-tls-verify: true`. If you see a new TLS validation error, just retry until it works. Obviously this is not a good practice overall and steps should be taken to have `kubectl` include the Netskope MitM certificate.
 
 ## Flux
+
+FluxCD is used to deploy all of the cluster applications and Wiz runtime defense components.
 
 ```sh
 flux bootstrap github \
@@ -50,9 +54,37 @@ flux reconcile kustomization apps -n flux-system
 
 ## Wiz Scan
 
-Initiate an on-demand scan going to `Settings > Deployments`, finding the options next to the AWS Connector, and initiating a rescan of the cloud and workloads.
+To have Wiz show the new EKS cluster and associated findings, it must first rescan the AWS accounts (or wait a day and it'll appear).
 
-## MKAT Scan
+Initiate an on-demand scan by logging into Wiz, going to `Settings > Deployments`, finding the options menu button next to the AWS Connector, and initiating a rescan of the cloud and workloads.
+
+## SOPS
+
+[SOPS](https://github.com/getsops/sops) is used to store Kubernetes secrets encrypted inside this git repository. The encryption and decryption is backed by a KMS key. The Terraform `sops.tf` file creates this KMS key and also grants a Flux service account permission to decrypt using this key.
+
+To encrypt a new Kubernetes secret YAML file:
+
+```sh
+sops -e -i my-k8s-secret.yaml
+```
+
+Decrypt secret:
+
+```sh
+sops -d my-k8s-secret.yaml
+```
+
+### Notes on Terraform as it relates to SOPS
+
+Terraform sets up a `.sops.yaml` file within this project that instructs SOPS with how to encrypt new secrets so you don't have to pass as many command line arguments to the encryption command. Sometimes this file seems to get ignored and you'll need to add `--kms <key-arn>` to the encryption command.
+
+Also, a `terraform destroy` will delete the encryption key used for this repository, which is not ideal because the encrypted secrets in this repository will not be able to be decrypted and will have to be re-created. Long-term, there should be a separate Terraform state to manage the KMS key lifecycle. For now, a workaround is to cancel the KMS key deletion after running `terraform destroy`. Then, before rebuilding the cluster run `tf import 'aws_kms_key.sops' '<kms-key-arn>'`.
+
+## Other
+
+This section contains some other interesting things you can do with the cluster.
+
+### MKAT Scan
 
 Check permissions using DataDog's tool [MKAT](https://github.com/DataDog/managed-kubernetes-auditing-toolkit).
 
@@ -75,7 +107,7 @@ Find access to IMDS (both IMDSv1 and IMDSv2):
 mkat eks test-imds-access
 ```
 
-## Check Pod Security Admission violations
+### Check Pod Security Admission violations
 
 This command previews which resources would violate pod security best practices if higher pod security admission controls were applied.
 
@@ -83,20 +115,8 @@ This command previews which resources would violate pod security best practices 
 kubectl label --dry-run=server --overwrite ns --all pod-security.kubernetes.io/enforce=restricted
 ```
 
-## SOPS
+### Future Ideas
 
-Encrypt secret:
-
-```sh
-sops -e -i my-k8s-secret.yaml
-```
-
-Decrypt secret:
-
-```sh
-sops -d my-k8s-secret.yaml
-```
-
-## Ideas
-
+- Move terraform state into S3 backend
 - Add certificate to game ingress
+- Add instructions for others to stand up their own EKS clusters in their own AWS accounts
