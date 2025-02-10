@@ -30,6 +30,7 @@ spec:
         namespace: wiz-admission-controller
       interval: 12h
   values:
+    replicaCount: 1
     wizApiToken:
       secret:
         create: false
@@ -40,6 +41,7 @@ spec:
         name: "wiz-client-auth"
     kubernetesAuditLogsWebhook:
       enabled: true
+      replicaCount: 1
     opaWebhook:
       namespaceSelector:  # https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#matching-requests-namespaceselector
         matchExpressions:
