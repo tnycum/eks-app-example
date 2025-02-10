@@ -29,6 +29,7 @@ spec:
         name: wiz-sec
         namespace: wiz-sensor
       interval: 12h
+      reconcileStrategy: Revision
   values:
     wizApiToken:
       secret:
