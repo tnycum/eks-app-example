@@ -29,6 +29,7 @@ spec:
         name: wiz-sec
         namespace: wiz-admission-controller
       interval: 12h
+      reconcileStrategy: Revision
   values:
     replicaCount: 1
     wizApiToken:
