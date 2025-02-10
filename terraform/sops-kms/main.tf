@@ -31,36 +31,8 @@ resource "aws_kms_key_policy" "sops" {
 # Manage the local sops config file so we don't need to specify the KMS key to
 # use for encryption/decryption using the CLI
 resource "local_file" "sops_config" {
-  filename = "${path.module}/../.sops.yaml"
+  filename = "${path.module}/../../.sops.yaml"
   content = templatefile("${path.module}/templates/sops.yaml.tmpl", {
     arn = aws_kms_key.sops.arn
   })
-}
-
-# Allow the Flux kustomize controller to decrypt SOPS secrets
-module "custom_pod_identity" {
-  source = "terraform-aws-modules/eks-pod-identity/aws"
-
-  name = "eks_sops_decrypt"
-
-  attach_custom_policy      = true
-
-  policy_statements = [
-    {
-      sid       = "EKSSOPSDecrypt"
-      actions   = [
-        "kms:Decrypt",
-        "kms:DescribeKey"
-      ]
-      resources = ["${aws_kms_key.sops.arn}"]
-    }
-  ]
-
-  associations = {
-    flux-kustomize-controller = {
-      cluster_name = module.eks.cluster_name
-      namespace = "flux-system"
-      service_account = "kustomize-controller"
-    }
-  }
 }

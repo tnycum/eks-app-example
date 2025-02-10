@@ -12,6 +12,22 @@ aws sso login --profile <profile-name>
 export AWS_PROFILE=<profile-name>
 ```
 
+## Create S3 Backend
+
+```sh
+cd terraform/remote-state
+terraform init
+terraform apply
+```
+
+## Create SOPS KMS Key
+
+```sh
+cd terraform/sops-kms
+terraform init
+terraform apply
+```
+
 ## Build EKS cluster
 
 ```sh
@@ -124,5 +140,6 @@ kubectl label --dry-run=server --overwrite ns --all pod-security.kubernetes.io/e
 ### Future Ideas
 
 - Move terraform state into S3 backend
+- Use datasources remote state to pass KMS ARN to EKS cluster input
 - Add certificate to game ingress
 - Add instructions for others to stand up their own EKS clusters in their own AWS accounts
