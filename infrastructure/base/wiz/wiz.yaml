@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wiz
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: wiz-sec
+  namespace: wiz
+spec:
+  interval: 24h
+  url: https://charts.wiz.io
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wiz-kubernetes-integration
+  namespace: wiz
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: wiz-kubernetes-integration
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: wiz-sec
+        namespace: wiz-admission-controller
+      interval: 12h
+      reconcileStrategy: Revision
+  values:
+    global:
+      wizApiToken:
+        secret:
+          create: false
+          name: wiz-api-token
+
+      wiz-kubernetes-connector:
+        enabled: true
+        autoCreateConnector:
+          clusterFlavor: EKS
+        wiz-broker:
+          enabled: true
+      
+      wiz-sensor:
+        enabled: true
+        imagePullSecret:
+          create: false
+          name: sensor-image-pull
+
+      wiz-admission-controller:
+        enabled: true
+        opaWebhook:
+          enabled: true
+        replicaCount: 1
+        kubernetesAuditLogsWebhook:
+          enabled: true
+          replicaCount: 1
