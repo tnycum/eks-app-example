@@ -96,6 +96,12 @@ Decrypt secret:
 sops -d my-k8s-secret.yaml
 ```
 
+### Creating the Wiz Secret
+
+```sh
+k create secret generic wiz-api-token --from-literal=clientId=<client-id> --from-literal=clientToken=<client-secret> -n wiz -o yaml --dry-run=client > wiz-api-token-secret.yaml
+```
+
 ### Notes on Terraform as it relates to SOPS
 
 Terraform sets up a `.sops.yaml` file within this project that instructs SOPS with how to encrypt new secrets so you don't have to pass as many command line arguments to the encryption command. Sometimes this file seems to get ignored and you'll need to add `--kms <key-arn>` to the encryption command.

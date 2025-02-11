@@ -27,7 +27,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: wiz-sec
-        namespace: wiz-admission-controller
+        namespace: wiz
       interval: 12h
       reconcileStrategy: Revision
   values:
