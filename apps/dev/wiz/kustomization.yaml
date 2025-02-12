@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - wiz-api-token-secret.yaml
+  - wiz-sensor-image-pull-secret.yaml
+  - ../../base/wiz
+patches:
+  - path: wiz-values.yaml
+    target:
+      kind: HelmRelease

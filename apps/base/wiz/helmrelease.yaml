@@ -1,18 +1,3 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: wiz
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: wiz-sec
-  namespace: wiz
-spec:
-  interval: 24h
-  url: https://charts.wiz.io
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -47,7 +32,5 @@ spec:
       enabled: true
       opaWebhook:
         enabled: true
-      replicaCount: 1
       kubernetesAuditLogsWebhook:
         enabled: true
-        replicaCount: 1

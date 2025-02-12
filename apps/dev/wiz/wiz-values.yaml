@@ -1,0 +1,11 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wiz-kubernetes-integration
+  namespace: wiz
+spec:
+  values:
+    wiz-admission-controller:
+      replicaCount: 1
+      kubernetesAuditLogsWebhook:
+        replicaCount: 1
