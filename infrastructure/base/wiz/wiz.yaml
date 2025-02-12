@@ -23,7 +23,7 @@ spec:
   chart:
     spec:
       chart: wiz-kubernetes-integration
-      version: "3.x"
+      version: "0.x"
       sourceRef:
         kind: HelmRepository
         name: wiz-sec
