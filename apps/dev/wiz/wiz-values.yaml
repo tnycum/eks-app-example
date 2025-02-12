@@ -6,6 +6,6 @@ metadata:
 spec:
   values:
     wiz-admission-controller:
-      replicaCount: 1
+      replicaCount: 2
       kubernetesAuditLogsWebhook:
         replicaCount: 1
