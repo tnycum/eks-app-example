@@ -36,25 +36,18 @@ spec:
         secret:
           create: false
           name: wiz-api-token
-
-      wiz-kubernetes-connector:
-        enabled: true
-        autoCreateConnector:
-          clusterFlavor: EKS
-        wiz-broker:
-          enabled: true
       
-      wiz-sensor:
-        enabled: true
-        imagePullSecret:
-          create: false
-          name: sensor-image-pull
+    wiz-sensor:
+      enabled: true
+      imagePullSecret:
+        create: false
+        name: sensor-image-pull
 
-      wiz-admission-controller:
+    wiz-admission-controller:
+      enabled: true
+      opaWebhook:
         enabled: true
-        opaWebhook:
-          enabled: true
+      replicaCount: 1
+      kubernetesAuditLogsWebhook:
+        enabled: true
         replicaCount: 1
-        kubernetesAuditLogsWebhook:
-          enabled: true
-          replicaCount: 1
