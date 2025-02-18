@@ -18,6 +18,10 @@ spec:
   values:
     pipelines:
       poolName: EKS
+      cache:
+        type: auto-ebs-sc
+      tmpdir:
+        type: auto-ebs-sc
     secret:
       create: false
       name: ado-agent-auth
