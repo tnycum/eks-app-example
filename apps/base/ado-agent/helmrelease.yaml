@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ado-agent
+  namespace: ado
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: clemlesne-blue-agent/blue-agent
+      version: "10.x"
+      sourceRef:
+        kind: HelmRepository
+        name: ado-agent
+        namespace: ado
+      interval: 12h
+      reconcileStrategy: Revision
+  values:
+    pipelines:
+      poolName: EKS
+    secret:
+      name: ado-agent-auth
