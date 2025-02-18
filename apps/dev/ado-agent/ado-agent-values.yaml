@@ -7,7 +7,7 @@ spec:
   values:
     replicaCount: 1
     maxReplicas: 3
-  pipelines:
-    cleanup:
-      failed: 10
-      successful: 10
+    pipelines:
+      cleanup:
+        failed: 10
+        successful: 10
