@@ -3,3 +3,7 @@ kind: Kustomization
 resources:
   - ../../base/ado-agent
   - ado-agent-auth-secret.yaml
+patches:
+  - path: ado-agent-values.yaml
+    target:
+      kind: HelmRelease
