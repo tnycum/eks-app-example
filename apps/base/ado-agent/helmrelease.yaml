@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: clemlesne-blue-agent/blue-agent
-      version: "10.x"
+      version: "10.0.x"
       sourceRef:
         kind: HelmRepository
         name: ado-agent
