@@ -11,3 +11,5 @@ spec:
       cleanup:
         failed: 10
         successful: 10
+    image:
+      flavor: ubi9
